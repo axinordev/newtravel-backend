@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from rest_framework import generics, status
 from rest_framework.response import Response
-from .models import HeroModel, AboutModel, AnniversaryModel, UpcomingToursModel, PopularDestinationModel, ReviewsModel, AdminContactModel, LocationModel, GalleryImageModel,GalleryVideoModel, OptionModel, UpcomingToursImagesModel, ServiceModel, EnquiryModel, GetInTouchModel
-from .serializers import HeroSerializers, AboutSerializers, AnniversarySerializers, UpcomingToursSerializers, PopularDestinationSerializers, ReviewsSerializers, AdminContactSerializers, LocationSerializers, GalleryImageSerializers, GalleryVideoSerializers, OptionSerializers, UpcomingToursImagesSerializers, ServiceSerializers, EnquirySerializers, GetInTouchSerializers
+from .models import HeroModel, AboutModel, AnniversaryModel, UpcomingToursModel, PopularDestinationModel, ReviewsModel, AdminContactModel, LocationModel, GalleryImageModel,GalleryVideoModel, OptionModel, UpcomingToursImagesModel, ServiceModel, EnquiryModel, GetInTouchModel, UpcomingDestinationHighlightsModel
+from .serializers import HeroSerializers, AboutSerializers, AnniversarySerializers, UpcomingToursSerializers, PopularDestinationSerializers, ReviewsSerializers, AdminContactSerializers, LocationSerializers, GalleryImageSerializers, GalleryVideoSerializers, OptionSerializers, UpcomingToursImagesSerializers, ServiceSerializers, EnquirySerializers, GetInTouchSerializers, UpcomingDestinationHighlightsSerializers
 from rest_framework.views import APIView
 from django.core.mail import send_mail
 from django.conf import settings
@@ -11,7 +11,6 @@ from rest_framework.permissions import IsAuthenticated
 
 class HeroListCreateView(generics.GenericAPIView):
     serializer_class = HeroSerializers
-    permission_classes = [IsAuthenticated]
 
     def get(self, request):
         hero = HeroModel.objects.first()
@@ -37,7 +36,6 @@ class HeroListCreateView(generics.GenericAPIView):
 
 class AnniversaryListCreateView(generics.ListCreateAPIView):
     serializer_class = AnniversarySerializers
-    permission_classes = [IsAuthenticated]
 
     def get(self, request):
         anniversary = AnniversaryModel.objects.first()
@@ -62,7 +60,6 @@ class AnniversaryListCreateView(generics.ListCreateAPIView):
 
 class AboutListCreateView(generics.ListCreateAPIView):
     serializer_class = AboutSerializers
-    permission_classes = [IsAuthenticated]
 
     def get(self, request):
         about = AboutModel.objects.first()
@@ -87,57 +84,56 @@ class AboutListCreateView(generics.ListCreateAPIView):
 
 class OptionListCreateView(generics.ListCreateAPIView):
     queryset = OptionModel.objects.all()
-    serializer_class = OptionSerializers
-    permission_classes = [IsAuthenticated]    
+    serializer_class = OptionSerializers   
 
 class OptionManageView(generics.RetrieveUpdateDestroyAPIView):
     queryset = OptionModel.objects.all()
     serializer_class = OptionSerializers
-    permission_classes = [IsAuthenticated]
     lookup_field = 'id'
 
 class UpcomingToursListCreateView(generics.ListCreateAPIView):
     queryset = UpcomingToursModel.objects.all()
     serializer_class = UpcomingToursSerializers
-    permission_classes = [IsAuthenticated]
 
 class UpcomingToursManageView(generics.RetrieveUpdateDestroyAPIView):
     queryset = UpcomingToursModel.objects.all()
     serializer_class = UpcomingToursSerializers
-    permission_classes = [IsAuthenticated]
     lookup_field = 'id'
 
 class UpcomingToursImagesListCreateView(generics.ListCreateAPIView):
     queryset = UpcomingToursImagesModel.objects.all()
     serializer_class = UpcomingToursImagesSerializers
-    permission_classes = [IsAuthenticated]
 
 class UpcomingToursImagesManageView(generics.RetrieveUpdateDestroyAPIView):
     queryset = UpcomingToursImagesModel.objects.all()
     serializer_class = UpcomingToursImagesSerializers
-    permission_classes = [IsAuthenticated]
+    lookup_field = 'id'
+
+class UpcomingDestinationHighlightsListCreateView(generics.ListCreateAPIView):
+    queryset = UpcomingDestinationHighlightsModel.objects.all()
+    serializer_class = UpcomingDestinationHighlightsSerializers
+
+class UpcomingDestinationHighlightsManageView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = UpcomingDestinationHighlightsModel.objects.all()
+    serializer_class = UpcomingDestinationHighlightsSerializers
     lookup_field = 'id'
 
 class OptionListCreateView(generics.ListCreateAPIView):
     queryset = OptionModel.objects.all()
     serializer_class = OptionSerializers
-    permission_classes = [IsAuthenticated]
 
 class PopularDestinationListCreateView(generics.ListCreateAPIView):
     queryset = PopularDestinationModel.objects.all()
     serializer_class = PopularDestinationSerializers
-    permission_classes = [IsAuthenticated]
 
 class PopularDestinationManageView(generics.RetrieveUpdateDestroyAPIView):
     queryset = PopularDestinationModel.objects.all()
     serializer_class = PopularDestinationSerializers
-    permission_classes = [IsAuthenticated]
     lookup_field = 'id'
 
 class ServiceListUpdateView(generics.GenericAPIView):
     queryset = ServiceModel.objects.all()
     serializer_class = ServiceSerializers
-    permission_classes = [IsAuthenticated]
 
     def get(self, request):
         services = ServiceModel.objects.all().order_by('id')
@@ -157,7 +153,6 @@ class ServiceListUpdateView(generics.GenericAPIView):
 class ServiceManageView(generics.RetrieveUpdateAPIView):
     queryset = ServiceModel.objects.all()
     serializer_class = ServiceSerializers
-    permission_classes = [IsAuthenticated]
     lookup_field = 'id'
 
     def update(self, request, *args, **kwargs):
@@ -167,17 +162,14 @@ class ServiceManageView(generics.RetrieveUpdateAPIView):
 class ReviewsListCreateView(generics.ListCreateAPIView):
     queryset = ReviewsModel.objects.all()
     serializer_class = ReviewsSerializers
-    permission_classes = [IsAuthenticated]
 
 class ReviewsManageView(generics.RetrieveUpdateDestroyAPIView):
     queryset = ReviewsModel.objects.all()
     serializer_class = ReviewsSerializers
-    permission_classes = [IsAuthenticated]
     lookup_field = 'id'
 
 class AdminContactListCreateView(generics.ListCreateAPIView):
     serializer_class = AdminContactSerializers
-    permission_classes = [IsAuthenticated]
     def get(self, request):
         admin_contact = AdminContactModel.objects.first()
         if not admin_contact:
@@ -202,17 +194,14 @@ class AdminContactListCreateView(generics.ListCreateAPIView):
 class GetInTouchListCreateView(generics.ListCreateAPIView):
     queryset = GetInTouchModel.objects.all()
     serializer_class = GetInTouchSerializers
-    permission_classes = [IsAuthenticated]
 
 class GetInTouchManageView(generics.RetrieveDestroyAPIView):
     queryset = GetInTouchModel.objects.all()
     serializer_class = GetInTouchSerializers
-    permission_classes = [IsAuthenticated]
     lookup_field = 'id'
 
 class LocationListCreateView(generics.ListCreateAPIView):
     serializer_class = LocationSerializers
-    permission_classes = [IsAuthenticated]
 
     def get(self, request):
         location = LocationModel.objects.first()
@@ -238,23 +227,19 @@ class LocationListCreateView(generics.ListCreateAPIView):
 class GalleryImageListCreateView(generics.ListCreateAPIView):
     queryset = GalleryImageModel.objects.all()
     serializer_class = GalleryImageSerializers
-    permission_classes = [IsAuthenticated]
 
 class GalleryImageManageView(generics.RetrieveUpdateDestroyAPIView):
     queryset = GalleryImageModel.objects.all()
     serializer_class = GalleryImageSerializers
-    permission_classes = [IsAuthenticated]
     lookup_field = 'id'
 
 class GalleryVideoListCreateView(generics.ListCreateAPIView):
     queryset = GalleryVideoModel.objects.all()
     serializer_class = GalleryVideoSerializers
-    permission_classes = [IsAuthenticated]
 
 class GalleryVideoManageView(generics.RetrieveUpdateDestroyAPIView):
     queryset = GalleryVideoModel.objects.all()
     serializer_class = GalleryVideoSerializers
-    permission_classes = [IsAuthenticated]
     lookup_field = 'id'
 
 class EnquiryView(APIView):

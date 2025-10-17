@@ -46,9 +46,17 @@ class UpcomingToursModel(models.Model):
 class UpcomingToursImagesModel(models.Model):
     tour = models.ForeignKey(UpcomingToursModel, on_delete=models.CASCADE, related_name='tour_images')
     image = models.ImageField(upload_to='images/')
+    about = models.TextField(null=True, blank=True)
 
     def __str__(self):
         return f"Image for {self.tour.location}"
+    
+class UpcomingDestinationHighlightsModel(models.Model):
+    tour = models.ForeignKey(UpcomingToursModel, on_delete=models.CASCADE, related_name='highlights')
+    highlight = models.CharField(max_length=500)
+
+    def __str__(self):
+        return f"Highlight for {self.tour.location}: {self.highlight}"
         
     
 class PopularDestinationModel(models.Model):

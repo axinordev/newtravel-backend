@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import HeroModel, AboutModel, AnniversaryModel, UpcomingToursModel, PopularDestinationModel, ReviewsModel, AdminContactModel, LocationModel, GalleryImageModel, GalleryVideoModel, OptionModel, UpcomingToursImagesModel, ServiceModel, EnquiryModel, GetInTouchModel
+from .models import HeroModel, AboutModel, AnniversaryModel, UpcomingToursModel, PopularDestinationModel, ReviewsModel, AdminContactModel, LocationModel, GalleryImageModel, GalleryVideoModel, OptionModel, UpcomingToursImagesModel, ServiceModel, EnquiryModel, GetInTouchModel, UpcomingDestinationHighlightsModel
 
 @admin.register(AboutModel)
 class AboutAdmin(admin.ModelAdmin):
@@ -64,6 +64,7 @@ class ServiceAdmin(admin.ModelAdmin):
     def has_delete_permission(self, request, obj=None):
         # Disable delete
         return False
+
     
 @admin.register(EnquiryModel)
 class EnquiryAdmin(admin.ModelAdmin):
@@ -78,5 +79,8 @@ class EnquiryAdmin(admin.ModelAdmin):
     )
     search_fields = ('full_name', 'email', 'Destination', 'Departure_Month')
     list_filter = ('Departure_Month', 'Trip_Duration', 'lodging_preference')
+
+admin.site.register(UpcomingDestinationHighlightsModel)
+
 
 
