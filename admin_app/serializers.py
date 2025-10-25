@@ -85,10 +85,13 @@ class GalleryImageSerializers(serializers.ModelSerializer):
         fields = '__all__'
 
 class GalleryVideoSerializers(serializers.ModelSerializer):
-    video = FullURLImageField()
+    video = serializers.FileField(use_url=True)
+    thumbnail = serializers.ImageField(use_url=True)
+
     class Meta:
         model = GalleryVideoModel
         fields = '__all__'
+
 
 class EnquirySerializers(serializers.ModelSerializer):
     class Meta:

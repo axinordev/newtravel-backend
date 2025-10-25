@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from .models import HeroModel, AboutModel, AnniversaryModel, UpcomingToursModel, PopularDestinationModel, ReviewsModel, AdminContactModel, LocationModel, GalleryImageModel,GalleryVideoModel, OptionModel, UpcomingToursImagesModel, ServiceModel, EnquiryModel, GetInTouchModel, UpcomingDestinationHighlightsModel
 from .serializers import HeroSerializers, AboutSerializers, AnniversarySerializers, UpcomingToursSerializers, PopularDestinationSerializers, ReviewsSerializers, AdminContactSerializers, LocationSerializers, GalleryImageSerializers, GalleryVideoSerializers, OptionSerializers, UpcomingToursImagesSerializers, ServiceSerializers, EnquirySerializers, GetInTouchSerializers, UpcomingDestinationHighlightsSerializers
 from rest_framework.views import APIView
-from django.core.mail import send_mail
+from django.core.mail import send_mail, BadHeaderError
 from django.conf import settings
 from rest_framework.permissions import IsAuthenticated
 
@@ -242,52 +242,49 @@ class GalleryVideoManageView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = GalleryVideoSerializers
     lookup_field = 'id'
 
+
 class EnquiryView(APIView):
-    permission_classes = [IsAuthenticated]
-    # Handle POST request (user submits form)
     def post(self, request):
-        serializer = EnquirySerializers(data=request.data)
-        if serializer.is_valid():
-            enquiry = serializer.save()
+        try:
+            serializer = EnquirySerializers(data=request.data)
+            if serializer.is_valid():
+                enquiry = serializer.save()
 
-            # Construct email message for admin
-            subject = f"New Enquiry from {enquiry.full_name}"
-            message = f"""
-                            New enquiry received:
+                # Update the email content for new fields
+                subject = "New Enquiry Received"
+                message = f"""
+New enquiry received:
 
-                            Full Name: {enquiry.full_name}
-                            Email: {enquiry.email}
-                            Phone: {enquiry.phone}
-                            Location: {enquiry.location}
-                            Destination 1: {enquiry.Destination}
-                            Destination 2: {enquiry.Destination2 or 'N/A'}
-                            Number of People: {enquiry.Number_of_People}
-                            Age Groups: {enquiry.Age_Groups}
-                            Budget per Person: ₹{enquiry.budget_per_person}
-                            Budget Flexibility: {enquiry.how_strict_budget}
-                            Lodging Preference: {enquiry.lodging_preference}
-                            Departure Month: {enquiry.Departure_Month}
-                            Trip Duration: {enquiry.Trip_Duration}
+Email: {enquiry.email}
+Phone: {enquiry.phone}
+Destination 1: {enquiry.Destination}
+Destination 2: {enquiry.Destination2 or 'N/A'}
+Travel Plans: {enquiry.travelPlans or 'N/A'}
 
-                            Please check the admin panel for full details.
-            """
+Please check the admin panel for full details.
+                """
 
-            send_mail(
-                subject,
-                message,
-                settings.DEFAULT_FROM_EMAIL,
-                [settings.ADMIN_EMAIL],  # Add multiple admins if needed
-                fail_silently=False,
-            )
+                try:
+                    send_mail(
+                        subject,
+                        message,
+                        settings.DEFAULT_FROM_EMAIL,
+                        [settings.ADMIN_EMAIL],
+                        fail_silently=False,
+                    )
+                except Exception as e:
+                    print("Mail sending error:", e)
+                    # For testing with console backend, this should not fail
 
-            return Response(
-                {"message": "Enquiry submitted successfully!"},
-                status=status.HTTP_201_CREATED,
-            )
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                return Response(
+                    {"message": "Enquiry submitted successfully!"},
+                    status=status.HTTP_201_CREATED,
+                )
 
-    # Handle GET request (admin views all enquiries)
-    def get(self, request):
-        enquiries = EnquiryModel.objects.all().order_by('-id')
-        serializer = EnquirySerializers(enquiries, many=True)
-        return Response(serializer.data)
+            else:
+                print("Serializer errors:", serializer.errors)
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        except Exception as e:
+            print("View error:", e)
+            return Response({"error": str(e)}, status=500)

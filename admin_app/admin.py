@@ -54,6 +54,7 @@ admin.site.register(GetInTouchModel)
 @admin.register(ServiceModel)
 class ServiceAdmin(admin.ModelAdmin):
     list_display = ['id', 'title']
+    list_display_links = ['title']
 
     def has_add_permission(self, request):
         # Allow add only until there are 9 items
@@ -69,16 +70,18 @@ class ServiceAdmin(admin.ModelAdmin):
 @admin.register(EnquiryModel)
 class EnquiryAdmin(admin.ModelAdmin):
     list_display = (
-        'full_name',
         'email',
         'phone',
         'Destination',
-        'Departure_Month',
-        'Trip_Duration',
-        'budget_per_person',
+        'Destination2',
+        'travelPlans',
     )
-    search_fields = ('full_name', 'email', 'Destination', 'Departure_Month')
-    list_filter = ('Departure_Month', 'Trip_Duration', 'lodging_preference')
+    search_fields = (
+        'email',
+        'Destination',
+        'Destination2',
+        'travelPlans',
+    )
 
 admin.site.register(UpcomingDestinationHighlightsModel)
 

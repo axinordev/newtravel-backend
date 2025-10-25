@@ -160,11 +160,11 @@ REST_FRAMEWORK = {
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'sumoodameen@gmail.com'
-EMAIL_HOST_PASSWORD = 'stlayzzxqvzclnem'  # Use App Password if Gmail
+EMAIL_HOST_USER = 'newalliedtour.netwebsite@gmail.com'
+EMAIL_HOST_PASSWORD = 'qcionswcmlnohvjp'  # Use App Password if Gmail
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
-ADMIN_EMAIL = 'sumoodameen@gmail.com'
+ADMIN_EMAIL = 'newalliedtour.netwebsite@gmail.com'
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=28),  # Set access token expiry time
