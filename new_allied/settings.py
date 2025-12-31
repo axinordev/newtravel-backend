@@ -164,7 +164,7 @@ EMAIL_HOST_USER = 'newalliedtour.netwebsite@gmail.com'
 EMAIL_HOST_PASSWORD = 'qcionswcmlnohvjp'  # Use App Password if Gmail
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
-ADMIN_EMAIL = 'newalliedtour.netwebsite@gmail.com'
+ADMIN_EMAIL = 'queriesnewallied@gmail.com'
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=28),  # Set access token expiry time
