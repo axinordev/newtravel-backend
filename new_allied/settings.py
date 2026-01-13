@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-uk8z9%d3m=i^hxwsoe&c2_+90ok^=+rw+-x+5j!vts@8jzpr(&'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['31.97.205.45', 'localhost','127.0.0.1', 'admin.newalliedtour.net', 'https://admin.newalliedtour.net']
 
@@ -89,7 +89,7 @@ DATABASES = {
         'NAME': 'travel_db',
         'USER': 'postgres',
         'PASSWORD': 'Sumood@32',
-        'HOST': 'localhost',
+        'HOST': 'db',
         'PORT': '5432',
         
     }
@@ -164,7 +164,7 @@ EMAIL_HOST_USER = 'newalliedtour.netwebsite@gmail.com'
 EMAIL_HOST_PASSWORD = 'qcionswcmlnohvjp'  # Use App Password if Gmail
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
-ADMIN_EMAIL = 'newalliedtour.netwebsite@gmail.com'
+ADMIN_EMAIL = 'queriesnewallied@gmail.com'
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=28),  # Set access token expiry time

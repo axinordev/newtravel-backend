@@ -1,0 +1,82 @@
+version: "3.9"
+
+services:
+  web:
+    build: .
+    container_name: newtravel-web
+    restart: unless-stopped
+    depends_on:
+      - db
+    command: >
+      sh -c "python wait_for_db.py &&
+             python manage.py migrate &&
+             python manage.py collectstatic --noinput &&
+             gunicorn new_allied.wsgi:application --bind 0.0.0.0:8000"
+    environment:
+      DEBUG: "0"
+      DJANGO_SECRET_KEY: "replace-with-your-secret-key"
+      DATABASE_NAME: "travel_db"
+      DATABASE_USER: "postgres"
+      DATABASE_PASSWORD: "Sumood@32"
+      DATABASE_HOST: "db"
+      DATABASE_PORT: "5432"
+      ALLOWED_HOSTS: "admin.newalliedtour.net,31.97.205.45,localhost,127.0.0.1"
+      STATIC_ROOT: "/app/staticfiles"
+      STATIC_URL: "/static/"
+      MEDIA_ROOT: "/app/media"
+      MEDIA_URL: "/media/"
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./media:/app/media
+      - ./staticfiles:/app/staticfiles
+    networks:
+      - rocketchat
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.newtravel.rule=Host(`admin.newalliedtour.net`)"
+      - "traefik.http.routers.newtravel.entrypoints=https"
+      - "traefik.http.routers.newtravel.tls.certresolver=le"
+      - "traefik.http.services.newtravel.loadbalancer.server.port=8000"
+
+  db:
+    image: postgres:15
+    container_name: newtravel-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Sumood@32
+      POSTGRES_DB: travel_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - rocketchat
+
+  traefik:
+    image: traefik:v3.0
+    container_name: traefik
+    restart: unless-stopped
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--entrypoints.https.address=:443"
+      - "--entrypoints.http.address=:80"
+      - "--certificatesresolvers.le.acme.email=youremail@example.com"
+      - "--certificatesresolvers.le.acme.storage=/letsencrypt/acme.json"
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080" # Traefik dashboard
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "./letsencrypt:/letsencrypt"
+    networks:
+      - rocketchat
+
+networks:
+  rocketchat:
+    external: true
+
+volumes:
+  postgres_data:
+

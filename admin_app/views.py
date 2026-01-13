@@ -12,48 +12,64 @@ from rest_framework.permissions import IsAuthenticated
 class HeroListCreateView(generics.GenericAPIView):
     serializer_class = HeroSerializers
 
+    def get_serializer_context(self):
+        # Ensure 'request' is passed to serializer
+        context = super().get_serializer_context()
+        context.update({"request": self.request})
+        return context
+
     def get(self, request):
         hero = HeroModel.objects.first()
         if not hero:
             return Response({"detail": "No hero found"}, status=404)
-        serializer = self.serializer_class(hero)
+        serializer = self.get_serializer(hero)
         return Response(serializer.data)
 
     def post(self, request):
         hero = HeroModel.objects.first()
 
         if hero:
-            serializer = self.serializer_class(hero, data=request.data, partial=True)
+            serializer = self.get_serializer(hero, data=request.data, partial=True)
             serializer.is_valid(raise_exception=True)
             serializer.save()
             return Response(serializer.data, status=200)
 
-        serializer = self.serializer_class(data=request.data)
+        serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status=201)
 
 
+
+
+
+
 class AnniversaryListCreateView(generics.ListCreateAPIView):
     serializer_class = AnniversarySerializers
+
+    def get_serializer_context(self):
+        # Pass the request to the serializer
+        context = super().get_serializer_context()
+        context.update({"request": self.request})
+        return context
 
     def get(self, request):
         anniversary = AnniversaryModel.objects.first()
         if not anniversary:
             return Response({"detail": "No anniversary found"}, status=404)
-        serializer = self.serializer_class(anniversary)
+        serializer = self.get_serializer(anniversary)
         return Response(serializer.data)
 
     def post(self, request):
         anniversary = AnniversaryModel.objects.first()
 
         if anniversary:
-            serializer = self.serializer_class(anniversary, data=request.data, partial=True)
+            serializer = self.get_serializer(anniversary, data=request.data, partial=True)
             serializer.is_valid(raise_exception=True)
             serializer.save()
             return Response(serializer.data, status=200)
 
-        serializer = self.serializer_class(data=request.data)
+        serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status=201)
