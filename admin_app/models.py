@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.exceptions import ValidationError
+from ckeditor.fields import RichTextField
 
 
 # Create your models here.
@@ -173,3 +174,61 @@ class GalleryVideoModel(models.Model):
 
     
 
+class TermsAndConditions(models.Model):
+    title = models.CharField(max_length=255, default="Terms and Conditions")
+    content = RichTextField(help_text="Enter the terms and conditions content")
+    last_updated = models.DateField(auto_now=True)
+    
+    class Meta:
+        verbose_name = "Terms and Conditions"
+        verbose_name_plural = "Terms and Conditions"
+    
+    def __str__(self):
+        return self.title
+    def save(self, *args, **kwargs):
+        # Singleton pattern - only one instance allowed
+        if not self.pk and TermsAndConditions.objects.exists():
+            existing = TermsAndConditions.objects.first()
+            existing.title = self.title
+            existing.content = self.content
+            existing.save()
+            return
+        super().save(*args, **kwargs)
+class PrivacyPolicy(models.Model):
+    title = models.CharField(max_length=255, default="Privacy Policy")
+    content = RichTextField(help_text="Enter the privacy policy content")
+    last_updated = models.DateField(auto_now=True)
+    
+    class Meta:
+        verbose_name = "Privacy Policy"
+        verbose_name_plural = "Privacy Policy"
+    
+    def __str__(self):
+        return self.title
+    def save(self, *args, **kwargs):
+        if not self.pk and PrivacyPolicy.objects.exists():
+            existing = PrivacyPolicy.objects.first()
+            existing.title = self.title
+            existing.content = self.content
+            existing.save()
+            return
+        super().save(*args, **kwargs)
+class CancellationPolicy(models.Model):
+    title = models.CharField(max_length=255, default="Cancellation and Refund Policy")
+    content = RichTextField(help_text="Enter the cancellation and refund policy content")
+    last_updated = models.DateField(auto_now=True)
+    
+    class Meta:
+        verbose_name = "Cancellation Policy"
+        verbose_name_plural = "Cancellation Policy"
+    
+    def __str__(self):
+        return self.title
+    def save(self, *args, **kwargs):
+        if not self.pk and CancellationPolicy.objects.exists():
+            existing = CancellationPolicy.objects.first()
+            existing.title = self.title
+            existing.content = self.content
+            existing.save()
+            return
+        super().save(*args, **kwargs)

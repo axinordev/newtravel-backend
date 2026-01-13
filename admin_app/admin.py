@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import HeroModel, HeroImageModel, AboutModel, AnniversaryModel, UpcomingToursModel, PopularDestinationModel, ReviewsModel, AdminContactModel, LocationModel, GalleryImageModel, GalleryVideoModel, OptionModel, UpcomingToursImagesModel, ServiceModel, EnquiryModel, GetInTouchModel, UpcomingDestinationHighlightsModel
+from .models import HeroModel, HeroImageModel, AboutModel, AnniversaryModel, UpcomingToursModel, PopularDestinationModel, ReviewsModel, AdminContactModel, LocationModel, GalleryImageModel, GalleryVideoModel, OptionModel, UpcomingToursImagesModel, ServiceModel, EnquiryModel, GetInTouchModel, UpcomingDestinationHighlightsModel, TermsAndConditions, PrivacyPolicy, CancellationPolicy
 
 @admin.register(AboutModel)
 class AboutAdmin(admin.ModelAdmin):
@@ -85,6 +85,27 @@ class EnquiryAdmin(admin.ModelAdmin):
     )
 
 admin.site.register(UpcomingDestinationHighlightsModel)
+
+class SingletonAdminMixin:
+    """Mixin to ensure only one instance exists"""
+    
+    def has_add_permission(self, request):
+        return not self.model.objects.exists()
+    
+    def has_delete_permission(self, request, obj=None):
+        return False
+@admin.register(TermsAndConditions)
+class TermsAndConditionsAdmin(SingletonAdminMixin, admin.ModelAdmin):
+    list_display = ['title', 'last_updated']
+    readonly_fields = ['last_updated']
+@admin.register(PrivacyPolicy)
+class PrivacyPolicyAdmin(SingletonAdminMixin, admin.ModelAdmin):
+    list_display = ['title', 'last_updated']
+    readonly_fields = ['last_updated']
+@admin.register(CancellationPolicy)
+class CancellationPolicyAdmin(SingletonAdminMixin, admin.ModelAdmin):
+    list_display = ['title', 'last_updated']
+    readonly_fields = ['last_updated']
 
 
 

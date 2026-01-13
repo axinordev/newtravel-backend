@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'auth_app',
     'rest_framework_simplejwt',
+    'ckeditor',
     
 ]
 
@@ -203,6 +204,14 @@ JAZZMIN_SETTINGS = {
     ],
     "show_ui_builder": False,
 
+}
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'full',
+        'height': 400,
+        'width': '100%',
+    },
 }
 
 

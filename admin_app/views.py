@@ -1,12 +1,13 @@
 from django.shortcuts import render
 from rest_framework import generics, status
 from rest_framework.response import Response
-from .models import HeroModel, HeroImageModel, AboutModel, AnniversaryModel, UpcomingToursModel, PopularDestinationModel, ReviewsModel, AdminContactModel, LocationModel, GalleryImageModel,GalleryVideoModel, OptionModel, UpcomingToursImagesModel, ServiceModel, EnquiryModel, GetInTouchModel, UpcomingDestinationHighlightsModel
-from .serializers import HeroSerializers, HeroImageSerializers, AboutSerializers, AnniversarySerializers, UpcomingToursSerializers, PopularDestinationSerializers, ReviewsSerializers, AdminContactSerializers, LocationSerializers, GalleryImageSerializers, GalleryVideoSerializers, OptionSerializers, UpcomingToursImagesSerializers, ServiceSerializers, EnquirySerializers, GetInTouchSerializers, UpcomingDestinationHighlightsSerializers
+from .models import HeroModel, HeroImageModel, AboutModel, AnniversaryModel, UpcomingToursModel, PopularDestinationModel, ReviewsModel, AdminContactModel, LocationModel, GalleryImageModel,GalleryVideoModel, OptionModel, UpcomingToursImagesModel, ServiceModel, EnquiryModel, GetInTouchModel, UpcomingDestinationHighlightsModel, TermsAndConditions, PrivacyPolicy, CancellationPolicy
+from .serializers import HeroSerializers, HeroImageSerializers, AboutSerializers, AnniversarySerializers, UpcomingToursSerializers, PopularDestinationSerializers, ReviewsSerializers, AdminContactSerializers, LocationSerializers, GalleryImageSerializers, GalleryVideoSerializers, OptionSerializers, UpcomingToursImagesSerializers, ServiceSerializers, EnquirySerializers, GetInTouchSerializers, UpcomingDestinationHighlightsSerializers, TermsAndConditionsSerializer, PrivacyPolicySerializer, CancellationPolicySerializer
 from rest_framework.views import APIView
 from django.core.mail import send_mail, BadHeaderError
 from django.conf import settings
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import api_view
 
 
 class HeroListCreateView(generics.GenericAPIView):
@@ -323,3 +324,53 @@ Please check the admin panel for full details.
         except Exception as e:
             print("View error:", e)
             return Response({"error": str(e)}, status=500)
+
+
+@api_view(['GET'])
+def terms_and_conditions_view(request):
+    """Returns the terms and conditions content."""
+    try:
+        terms = TermsAndConditions.objects.first()
+        if terms:
+            serializer = TermsAndConditionsSerializer(terms)
+            return Response(serializer.data)
+        return Response({
+            'title': 'Terms and Conditions',
+            'content': '<p>Content not available. Please add content in the admin panel.</p>',
+            'last_updated': None
+        })
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+@api_view(['GET'])
+def privacy_policy_view(request):
+    """Returns the privacy policy content."""
+    try:
+        policy = PrivacyPolicy.objects.first()
+        if policy:
+            serializer = PrivacyPolicySerializer(policy)
+            return Response(serializer.data)
+        return Response({
+            'title': 'Privacy Policy',
+            'content': '<p>Content not available. Please add content in the admin panel.</p>',
+            'last_updated': None
+        })
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+@api_view(['GET'])
+def cancellation_policy_view(request):
+    """Returns the cancellation and refund policy content."""
+    try:
+        policy = CancellationPolicy.objects.first()
+        if policy:
+            serializer = CancellationPolicySerializer(policy)
+            return Response(serializer.data)
+        return Response({
+            'title': 'Cancellation and Refund Policy',
+            'content': '<p>Content not available. Please add content in the admin panel.</p>',
+            'last_updated': None
+        })
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+

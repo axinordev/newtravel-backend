@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import *
+from .views import HeroListCreateView, HeroImageListCreateView, HeroImageManageView, AnniversaryListCreateView, AboutListCreateView, OptionListCreateView, OptionManageView, UpcomingToursListCreateView, UpcomingToursManageView, UpcomingToursImagesListCreateView, UpcomingToursImagesManageView, UpcomingDestinationHighlightsListCreateView, UpcomingDestinationHighlightsManageView, PopularDestinationListCreateView, PopularDestinationManageView, ServiceListUpdateView, ServiceManageView, ReviewsListCreateView, ReviewsManageView, AdminContactListCreateView, LocationListCreateView, GalleryImageListCreateView, GalleryImageManageView, GalleryVideoListCreateView, GalleryVideoManageView, EnquiryView, GetInTouchListCreateView, GetInTouchManageView, terms_and_conditions_view, privacy_policy_view, cancellation_policy_view
 urlpatterns = [
     path('hero_section/', HeroListCreateView.as_view(), name='hero-list-create'),
     path('hero_images/', HeroImageListCreateView.as_view(), name='hero-image-list-create'),
@@ -29,4 +29,7 @@ urlpatterns = [
     path('enquiries/', EnquiryView.as_view(), name='enquiries'),
     path('get_in_touch/', GetInTouchListCreateView.as_view(), name='get-in-touch'),
     path('get_in_touch/<int:id>/', GetInTouchManageView.as_view(), name='get-in-touch-manage'),
+    path('api/terms_and_conditions/', terms_and_conditions_view, name='terms_and_conditions'),
+    path('api/privacy_policy/', privacy_policy_view, name='privacy_policy'),
+    path('api/cancellation_policy/', cancellation_policy_view, name='cancellation_policy'),
 ]

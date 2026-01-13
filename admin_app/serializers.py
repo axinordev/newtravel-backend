@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import HeroModel, HeroImageModel, AnniversaryModel, AboutModel, OptionModel, UpcomingToursModel, UpcomingToursImagesModel, PopularDestinationModel, ServiceModel, ReviewsModel, AdminContactModel, LocationModel, GalleryImageModel, GalleryVideoModel, EnquiryModel, GetInTouchModel, UpcomingDestinationHighlightsModel
+from .models import HeroModel, HeroImageModel, AnniversaryModel, AboutModel, OptionModel, UpcomingToursModel, UpcomingToursImagesModel, PopularDestinationModel, ServiceModel, ReviewsModel, AdminContactModel, LocationModel, GalleryImageModel, GalleryVideoModel, EnquiryModel, GetInTouchModel, UpcomingDestinationHighlightsModel, TermsAndConditions, PrivacyPolicy, CancellationPolicy
 from django.conf import settings
 
 class FullURLImageField(serializers.ImageField):
@@ -108,3 +108,16 @@ class GetInTouchSerializers(serializers.ModelSerializer):
     class Meta:
         model = GetInTouchModel
         fields = '__all__'
+
+class TermsAndConditionsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TermsAndConditions
+        fields = ['title', 'content', 'last_updated']
+class PrivacyPolicySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PrivacyPolicy
+        fields = ['title', 'content', 'last_updated']
+class CancellationPolicySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CancellationPolicy
+        fields = ['title', 'content', 'last_updated']
