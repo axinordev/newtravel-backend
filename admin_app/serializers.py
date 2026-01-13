@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import HeroModel, AnniversaryModel, AboutModel, OptionModel, UpcomingToursModel, UpcomingToursImagesModel, PopularDestinationModel, ServiceModel, ReviewsModel, AdminContactModel, LocationModel, GalleryImageModel, GalleryVideoModel, EnquiryModel, GetInTouchModel, UpcomingDestinationHighlightsModel
+from .models import HeroModel, HeroImageModel, AnniversaryModel, AboutModel, OptionModel, UpcomingToursModel, UpcomingToursImagesModel, PopularDestinationModel, ServiceModel, ReviewsModel, AdminContactModel, LocationModel, GalleryImageModel, GalleryVideoModel, EnquiryModel, GetInTouchModel, UpcomingDestinationHighlightsModel
 from django.conf import settings
 
 class FullURLImageField(serializers.ImageField):
@@ -10,9 +10,15 @@ class FullURLImageField(serializers.ImageField):
         if request is not None:
             return request.build_absolute_uri(value.url)
         return f"{settings.MEDIA_URL}{value.name}"
-    
-class HeroSerializers(serializers.ModelSerializer):
+
+class HeroImageSerializers(serializers.ModelSerializer):
     image = FullURLImageField()
+    class Meta:
+        model = HeroImageModel
+        fields = '__all__'
+
+class HeroSerializers(serializers.ModelSerializer):
+    images = HeroImageSerializers(many=True, read_only=True)
     class Meta:
         model = HeroModel
         fields = '__all__'

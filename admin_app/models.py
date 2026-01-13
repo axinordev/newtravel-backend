@@ -6,10 +6,20 @@ from django.core.exceptions import ValidationError
 
 class HeroModel(models.Model):
     description = models.TextField(blank=True, null=True)
-    image = models.ImageField(upload_to='images/')
 
     def __str__(self):
-        return self.description
+        return self.description or "Hero Section"
+
+class HeroImageModel(models.Model):
+    hero = models.ForeignKey(HeroModel, on_delete=models.CASCADE, related_name='images')
+    image = models.ImageField(upload_to='images/')
+    order = models.PositiveIntegerField(default=0, help_text="Order of the image in the carousel")
+
+    class Meta:
+        ordering = ['order']
+
+    def __str__(self):
+        return f"Hero Image {self.id}"
     
 class AnniversaryModel(models.Model):
     logo = models.ImageField(upload_to='images/')

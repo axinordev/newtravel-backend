@@ -83,7 +83,7 @@ WSGI_APPLICATION = 'new_allied.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-DATABASES = {
+"""DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'travel_db',
@@ -93,7 +93,19 @@ DATABASES = {
         'PORT': '5432',
         
     }
+}"""
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'newtravel_db',
+        'USER': 'newtravel_user',
+        'PASSWORD': 'Sumood@32',
+        'HOST': 'localhost',
+        'PORT': '5432',
+    }
 }
+
 
 
 # Password validation

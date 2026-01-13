@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import HeroModel, AboutModel, AnniversaryModel, UpcomingToursModel, PopularDestinationModel, ReviewsModel, AdminContactModel, LocationModel, GalleryImageModel, GalleryVideoModel, OptionModel, UpcomingToursImagesModel, ServiceModel, EnquiryModel, GetInTouchModel, UpcomingDestinationHighlightsModel
+from .models import HeroModel, HeroImageModel, AboutModel, AnniversaryModel, UpcomingToursModel, PopularDestinationModel, ReviewsModel, AdminContactModel, LocationModel, GalleryImageModel, GalleryVideoModel, OptionModel, UpcomingToursImagesModel, ServiceModel, EnquiryModel, GetInTouchModel, UpcomingDestinationHighlightsModel
 
 @admin.register(AboutModel)
 class AboutAdmin(admin.ModelAdmin):
@@ -25,6 +25,7 @@ class HeroAdmin(admin.ModelAdmin):
         return True
     
 admin.site.register(OptionModel)
+admin.site.register(HeroImageModel)
 admin.site.register(UpcomingToursImagesModel)
 admin.site.register(PopularDestinationModel)
 admin.site.register(UpcomingToursModel)

@@ -2,6 +2,8 @@ from django.urls import path
 from .views import *
 urlpatterns = [
     path('hero_section/', HeroListCreateView.as_view(), name='hero-list-create'),
+    path('hero_images/', HeroImageListCreateView.as_view(), name='hero-image-list-create'),
+    path('hero_images/<int:id>/', HeroImageManageView.as_view(), name='hero-image-manage'),
     path('anniversary_section/', AnniversaryListCreateView.as_view(), name='anniversary-list-create'),
     path('about_section/', AboutListCreateView.as_view(), name='about-list-create'),
     path('option_section/', OptionListCreateView.as_view(), name='option-list-create'),
