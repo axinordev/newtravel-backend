@@ -83,7 +83,7 @@ WSGI_APPLICATION = 'new_allied.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-"""DATABASES = {
+DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'travel_db',
@@ -93,9 +93,9 @@ WSGI_APPLICATION = 'new_allied.wsgi.application'
         'PORT': '5432',
         
     }
-}"""
+}
 
-DATABASES = {
+"""DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'newtravel_db',
@@ -104,7 +104,7 @@ DATABASES = {
         'HOST': 'localhost',
         'PORT': '5432',
     }
-}
+}"""
 
 
 
