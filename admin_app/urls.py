@@ -29,7 +29,7 @@ urlpatterns = [
     path('enquiries/', EnquiryView.as_view(), name='enquiries'),
     path('get_in_touch/', GetInTouchListCreateView.as_view(), name='get-in-touch'),
     path('get_in_touch/<int:id>/', GetInTouchManageView.as_view(), name='get-in-touch-manage'),
-    path('api/terms_and_conditions/', terms_and_conditions_view, name='terms_and_conditions'),
-    path('api/privacy_policy/', privacy_policy_view, name='privacy_policy'),
-    path('api/cancellation_policy/', cancellation_policy_view, name='cancellation_policy'),
+    path('terms_and_conditions/', terms_and_conditions_view, name='terms_and_conditions'),
+    path('privacy_policy/', privacy_policy_view, name='privacy_policy'),
+    path('cancellation_policy/', cancellation_policy_view, name='cancellation_policy'),
 ]
